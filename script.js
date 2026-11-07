@@ -135,7 +135,7 @@ document.querySelectorAll('.scratch').forEach((tile) => {
 
 /* ================= SCROLL REVEAL ================= */
 (function reveal() {
-  const targets = document.querySelectorAll('.sec > .h2, .ev, .collage, .rsvp .fld, .rsvp .chip, .contacts, .families');
+  const targets = document.querySelectorAll('.sec > .h2, .ev, .collage, .rsvp .fld, .contact-list, .families');
   if (!('IntersectionObserver' in window)) return;
   targets.forEach((t) => t.classList.add('reveal'));
   const io = new IntersectionObserver((entries) => {
@@ -151,7 +151,7 @@ document.querySelectorAll('.scratch').forEach((tile) => {
   const attendWrap = document.getElementById('attendWrap');
   const pickupWrap = document.getElementById('pickupWrap');
   let attending = true;
-  let pickup = true;
+  let pickup = false;
 
   form.querySelectorAll('.segs').forEach((group) => {
     const segs = group.querySelectorAll('.seg');
@@ -162,41 +162,32 @@ document.querySelectorAll('.scratch').forEach((tile) => {
     }));
   });
 
-  form.querySelectorAll('.chip').forEach((c) => c.addEventListener('click', () => {
-    c.setAttribute('aria-pressed', String(c.getAttribute('aria-pressed') !== 'true'));
-  }));
-
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const f = (n) => form.elements.namedItem(n);
-    const nameInput = f('name');
-    const name = nameInput.value.trim();
+    const val = (n) => f(n).value.trim();
     msg.className = 'form-msg';
-    nameInput.classList.remove('err');
-    if (!name) {
-      nameInput.classList.add('err');
-      msg.textContent = 'Please tell us your name.';
+    const fail = (input, text) => {
+      input.classList.add('err');
+      msg.textContent = text;
       msg.classList.add('err');
-      nameInput.focus();
-      return;
-    }
-    const events = [...form.querySelectorAll('.chip[aria-pressed="true"]')].map((c) => c.dataset.ev);
-    if (attending && events.length === 0) {
-      msg.textContent = 'Please pick at least one event you will attend.';
-      msg.classList.add('err');
-      return;
-    }
+      input.focus();
+    };
+    ['name', 'phone', 'guests'].forEach((n) => f(n).classList.remove('err'));
+    if (!val('name')) return fail(f('name'), 'Please tell us your name.');
+    if (val('phone').replace(/\D/g, '').length < 10) return fail(f('phone'), 'Please enter a valid phone number.');
+    const guests = parseInt(val('guests'), 10);
+    if (attending && !(guests >= 1 && guests <= 20)) return fail(f('guests'), 'Please enter the number of guests (1–20).');
     const lines = [
       '💌 RSVP · Neha & Deepak',
-      `Name: ${name}`,
-      f('phone').value.trim() && `Phone: ${f('phone').value.trim()}`,
+      `Name: ${val('name')}`,
+      `Phone: ${val('phone')}`,
       `Attending: ${attending ? 'Joyfully accept 🎉' : 'Regretfully decline'}`,
-      attending && `Events: ${events.join(', ')}`,
+      attending && `Guests (incl. me): ${guests}`,
       attending && `Logistics help: ${pickup ? 'Yes, please' : 'No, thanks'}`,
-      attending && pickup && f('pickupTime').value.trim() && `Pick-up time: ${f('pickupTime').value.trim()}`,
-      attending && pickup && f('pickupFrom').value.trim() && `Pick-up from: ${f('pickupFrom').value.trim()}`,
-      attending && pickup && f('dropAt').value.trim() && `Drop at: ${f('dropAt').value.trim()}`,
-      f('advice').value.trim() && `Advice: ${f('advice').value.trim()}`,
+      attending && pickup && val('pickupTime') && `Pick-up time: ${val('pickupTime')}`,
+      attending && pickup && val('pickupFrom') && `Pick-up from: ${val('pickupFrom')}`,
+      attending && pickup && val('dropAt') && `Drop at: ${val('dropAt')}`,
     ].filter(Boolean);
     const url = `https://wa.me/${RSVP_WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
     window.open(url, '_blank', 'noopener');

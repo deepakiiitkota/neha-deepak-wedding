@@ -176,3 +176,6 @@ button{font:inherit;color:inherit;cursor:pointer}
 .sch em{font-size:15px;color:#5E403B;text-align:right}
 .group{width:100%;display:flex;flex-direction:column;gap:18px}
 .contacts a.tel{font-size:15px;color:#4A1620}
+.contact-list{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:12px;text-align:left}
+.contact-list em{font-size:15px;color:#5E403B}
+.contact-list a.tel{color:#4A1620}
