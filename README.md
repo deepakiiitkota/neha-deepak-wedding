@@ -11,7 +11,8 @@ Plain HTML/CSS/JS, no build step. Hosted on GitHub Pages.
 | --- | --- |
 | Text, events, addresses, contacts | `index.html` |
 | Wedding date/time for the countdown | `WEDDING_DATE` at the top of `script.js` |
-| WhatsApp number that receives RSVPs | `RSVP_WHATSAPP_NUMBER` at the top of `script.js` (digits only, with country code, e.g. `919876543210`) |
+| Google Sheet that stores RSVPs | `RSVP_SHEET_URL` at the top of `script.js`; setup in [`backend/README.md`](backend/README.md) |
+| Optional WhatsApp copy of each RSVP | `RSVP_WHATSAPP_NUMBER` at the top of `script.js` (digits only, with country code, e.g. `919876543210`) |
 | Colours & layout | `styles.css` |
 | Photos | drop files into `images/` (see `images/README.md` for names) |
 

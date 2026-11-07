@@ -1,8 +1,11 @@
 /* ================= CONFIG ================= */
 // Wedding-day start (IST) used by the countdown: Bhat, 4 Dec 2026, 10:15 AM.
 const WEDDING_DATE = new Date('2026-12-04T10:15:00+05:30');
-// WhatsApp number that receives RSVPs: country code + number, digits only (e.g. '919876543210').
-// Leave empty to let the guest pick who to send it to.
+// Google Sheet that stores every RSVP: paste the Apps Script Web app URL (ends in /exec).
+// See backend/README.md. Leave empty to fall back to WhatsApp only.
+const RSVP_SHEET_URL = '';
+// Optional: also open a WhatsApp message to this number (country code + number, digits only,
+// e.g. '919887311567'). Leave empty to skip WhatsApp when the Sheet is set up.
 const RSVP_WHATSAPP_NUMBER = '';
 
 /* ================= ENVELOPE ================= */
@@ -162,8 +165,11 @@ document.querySelectorAll('.scratch').forEach((tile) => {
     }));
   });
 
-  form.addEventListener('submit', (e) => {
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (submitBtn.disabled) return;
     const f = (n) => form.elements.namedItem(n);
     const val = (n) => f(n).value.trim();
     msg.className = 'form-msg';
@@ -189,8 +195,44 @@ document.querySelectorAll('.scratch').forEach((tile) => {
       attending && pickup && val('pickupFrom') && `Pick-up from: ${val('pickupFrom')}`,
       attending && pickup && val('dropAt') && `Drop at: ${val('dropAt')}`,
     ].filter(Boolean);
-    const url = `https://wa.me/${RSVP_WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
-    window.open(url, '_blank', 'noopener');
-    msg.textContent = attending ? 'Thank you! We can’t wait to celebrate with you.' : 'Thank you for letting us know. You’ll be missed!';
+    const thanks = attending ? 'Thank you! We can’t wait to celebrate with you.' : 'Thank you for letting us know. You’ll be missed!';
+
+    // WhatsApp: always when there's no Sheet, otherwise only if a number is configured.
+    // Opened before any await so phones don't treat it as a blocked pop-up.
+    if (!RSVP_SHEET_URL || RSVP_WHATSAPP_NUMBER) {
+      window.open(`https://wa.me/${RSVP_WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener');
+    }
+    if (!RSVP_SHEET_URL) { msg.textContent = thanks; return; }
+
+    const payload = {
+      name: val('name'),
+      phone: val('phone'),
+      attending: attending ? 'Yes' : 'No',
+      guests: attending ? guests : 0,
+      logistics: attending ? (pickup ? 'Yes' : 'No') : '',
+      pickupTime: attending && pickup ? val('pickupTime') : '',
+      pickupFrom: attending && pickup ? val('pickupFrom') : '',
+      dropAt: attending && pickup ? val('dropAt') : '',
+      website: val('website'), // honeypot, empty for real guests
+    };
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    try {
+      // text/plain + no-cors is the standard way to post to Apps Script from a static site.
+      await fetch(RSVP_SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+        keepalive: true,
+      });
+      submitBtn.textContent = 'RSVP sent ✓';
+      msg.textContent = thanks;
+    } catch (err) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send RSVP';
+      msg.textContent = 'Couldn’t send — please check your internet and try again, or call us.';
+      msg.classList.add('err');
+    }
   });
 })();
