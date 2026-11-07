@@ -1,6 +1,6 @@
 /* ================= CONFIG ================= */
-// Wedding start time (IST) used by the countdown.
-const WEDDING_DATE = new Date('2026-11-20T15:00:00+05:30');
+// Wedding-day start (IST) used by the countdown: Bhat, 4 Dec 2026, 10:15 AM.
+const WEDDING_DATE = new Date('2026-12-04T10:15:00+05:30');
 // WhatsApp number that receives RSVPs: country code + number, digits only (e.g. '919876543210').
 // Leave empty to let the guest pick who to send it to.
 const RSVP_WHATSAPP_NUMBER = '';
@@ -148,15 +148,19 @@ document.querySelectorAll('.scratch').forEach((tile) => {
 (function rsvp() {
   const form = document.getElementById('rsvpForm');
   const msg = document.getElementById('formMsg');
-  const segs = form.querySelectorAll('.seg');
-  const eventsWrap = document.getElementById('eventsWrap');
+  const attendWrap = document.getElementById('attendWrap');
+  const pickupWrap = document.getElementById('pickupWrap');
   let attending = true;
+  let pickup = true;
 
-  segs.forEach((b) => b.addEventListener('click', () => {
-    segs.forEach((x) => { x.classList.toggle('on', x === b); x.setAttribute('aria-checked', String(x === b)); });
-    attending = b.dataset.v === 'accept';
-    eventsWrap.hidden = !attending;
-  }));
+  form.querySelectorAll('.segs').forEach((group) => {
+    const segs = group.querySelectorAll('.seg');
+    segs.forEach((b) => b.addEventListener('click', () => {
+      segs.forEach((x) => { x.classList.toggle('on', x === b); x.setAttribute('aria-checked', String(x === b)); });
+      if (group.dataset.group === 'attend') { attending = b.dataset.v === 'accept'; attendWrap.hidden = !attending; }
+      if (group.dataset.group === 'pickup') { pickup = b.dataset.v === 'yes'; pickupWrap.hidden = !pickup; }
+    }));
+  });
 
   form.querySelectorAll('.chip').forEach((c) => c.addEventListener('click', () => {
     c.setAttribute('aria-pressed', String(c.getAttribute('aria-pressed') !== 'true'));
@@ -188,7 +192,10 @@ document.querySelectorAll('.scratch').forEach((tile) => {
       f('phone').value.trim() && `Phone: ${f('phone').value.trim()}`,
       `Attending: ${attending ? 'Joyfully accept 🎉' : 'Regretfully decline'}`,
       attending && `Events: ${events.join(', ')}`,
-      attending && f('song').value.trim() && `Song request: ${f('song').value.trim()}`,
+      attending && `Logistics help: ${pickup ? 'Yes, please' : 'No, thanks'}`,
+      attending && pickup && f('pickupTime').value.trim() && `Pick-up time: ${f('pickupTime').value.trim()}`,
+      attending && pickup && f('pickupFrom').value.trim() && `Pick-up from: ${f('pickupFrom').value.trim()}`,
+      attending && pickup && f('dropAt').value.trim() && `Drop at: ${f('dropAt').value.trim()}`,
       f('advice').value.trim() && `Advice: ${f('advice').value.trim()}`,
     ].filter(Boolean);
     const url = `https://wa.me/${RSVP_WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`;
