@@ -44,7 +44,7 @@ document.querySelectorAll('[data-img]').forEach((el) => {
     el.style.backgroundImage = `url("${src}")`;
     el.classList.add('has-img');
     el.setAttribute('role', 'img');
-    el.setAttribute('aria-label', el.textContent.trim());
+    el.setAttribute('aria-label', el.dataset.alt || el.textContent.trim());
   };
   img.src = src;
 });
