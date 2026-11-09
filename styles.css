@@ -160,3 +160,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .contact-list{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:12px;text-align:left}
 .contact-list em{font-size:15px;color:#5E403B}
 .contact-list a.tel{color:#4A1620}
+
+/* Background music toggle */
+.music-btn{position:fixed;right:16px;bottom:16px;z-index:50;width:46px;height:46px;border-radius:50%;border:1px solid #C9A24B;background:#4A1620;color:#E7CF8E;font-size:22px;line-height:1;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.music-btn.off{opacity:.6;text-decoration:line-through}
+.music-btn:focus-visible{outline:2px solid #E7CF8E;outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){.music-btn:not(.off){animation:spin 6s linear infinite}}

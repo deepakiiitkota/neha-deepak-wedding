@@ -18,6 +18,7 @@ const WEDDING_DATE = new Date('2026-12-04T10:15:00+05:30');
 
   toggle.addEventListener('change', () => {
     if (!toggle.checked) return;
+    startMusic(); // opening the envelope is a tap, so browsers allow audio to start
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     setTimeout(() => {
       screen.classList.add('gone');
@@ -29,6 +30,27 @@ const WEDDING_DATE = new Date('2026-12-04T10:15:00+05:30');
     }, reduce ? 200 : 2000);
   });
 })();
+
+/* ================= BACKGROUND MUSIC (music/song.mp3) ================= */
+function startMusic() {
+  const audio = document.getElementById('bgm');
+  const btn = document.getElementById('musicBtn');
+  if (!audio || !btn || startMusic.done) return;
+  startMusic.done = true;
+  audio.volume = 0.6;
+  const sync = () => {
+    const on = !audio.paused;
+    btn.classList.toggle('off', !on);
+    btn.setAttribute('aria-pressed', String(on));
+    btn.setAttribute('aria-label', on ? 'Mute music' : 'Play music');
+  };
+  audio.addEventListener('play', sync);
+  audio.addEventListener('pause', sync);
+  btn.addEventListener('click', () => (audio.paused ? audio.play().catch(() => {}) : audio.pause()));
+  // Show the button only when the song file exists and can play.
+  audio.addEventListener('canplay', () => { btn.hidden = false; sync(); }, { once: true });
+  audio.play().catch(() => {});
+}
 
 /* ================= PHOTOS (drop files in /images) ================= */
 document.querySelectorAll('[data-img]').forEach((el) => {

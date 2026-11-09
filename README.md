@@ -13,6 +13,7 @@ Plain HTML/CSS/JS, no build step. Hosted on GitHub Pages.
 | Wedding date/time for the countdown | `WEDDING_DATE` at the top of `script.js` |
 | Colours & layout | `styles.css` |
 | Photos | drop files into `images/` (see `images/README.md` for names) |
+| Background music | `music/song.mp3` (see `music/README.md`) |
 
 Commit and push to `main`; GitHub Pages redeploys in about a minute.
 
