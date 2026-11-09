@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Italianno&family=Noto+Serif+Devanagari:wght@400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=2026-11-09">
+<link rel="stylesheet" href="styles.css?v=2026-11-09b">
 </head>
 <body class="locked">
 
@@ -219,40 +219,8 @@
   <p class="p" style="font-style:italic;font-size:20px;color:#4A1620">Memories together · Written in the stars · Joy and laughter</p>
 </section>
 
-<!-- RSVP -->
-<section class="sec cream" id="rsvp">
-  <p class="eye" style="color:#8A4F4C">Join the celebration</p>
-  <h2 class="h2" style="color:#4A1620">RSVP</h2>
-  <p class="p">Kindly let us know if you can make it. Your presence will make this celebration whole.</p>
-  <form id="rsvpForm" class="rsvp" novalidate>
-    <label class="fld">Your name<input type="text" name="name" autocomplete="name" required></label>
-    <label class="fld">Phone number<input type="tel" name="phone" autocomplete="tel" placeholder="+91" required></label>
-    <label class="fld">Number of guests (including you)<input type="number" name="guests" min="1" max="20" value="1" inputmode="numeric"></label>
-    <div class="fld" style="margin-top:6px">Will you attend?</div>
-    <div class="segs" role="radiogroup" aria-label="Will you attend?" data-group="attend">
-      <button type="button" class="seg on" role="radio" aria-checked="true" data-v="accept">Joyfully accept</button>
-      <button type="button" class="seg" role="radio" aria-checked="false" data-v="decline">Regretfully decline</button>
-    </div>
-    <div class="group" id="attendWrap">
-      <div class="fld" style="margin-top:6px">Need help from our logistics team?</div>
-      <div class="segs" role="radiogroup" aria-label="Logistics help" data-group="pickup">
-        <button type="button" class="seg" role="radio" aria-checked="false" data-v="yes">Yes, please</button>
-        <button type="button" class="seg on" role="radio" aria-checked="true" data-v="no">No, thanks</button>
-      </div>
-      <div class="group" id="pickupWrap" hidden>
-        <label class="fld">Pick-up date &amp; time<input type="text" name="pickupTime" placeholder="e.g. 4 Dec, 9:00 AM"></label>
-        <label class="fld">Pick-up location<input type="text" name="pickupFrom" placeholder="Station, airport or address"></label>
-        <label class="fld">Drop location<input type="text" name="dropAt" placeholder="Venue or hotel"></label>
-      </div>
-    </div>
-    <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <p class="form-msg" id="formMsg" role="status"></p>
-    <button type="submit" class="btn btn-solid">Send RSVP</button>
-  </form>
-</section>
-
 <!-- CONTACT -->
-<section class="sec">
+<section class="sec cream">
   <p class="eye" style="color:#8A4F4C">Reach out</p>
   <h2 class="h2" style="color:#4A1620">Contact Us</h2>
   <div class="contact-list">
@@ -271,6 +239,6 @@
 
 </main>
 
-<script src="script.js?v=2026-11-09"></script>
+<script src="script.js?v=2026-11-09b"></script>
 </body>
 </html>
