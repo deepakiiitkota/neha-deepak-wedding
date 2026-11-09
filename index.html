@@ -227,13 +227,13 @@
   <form id="rsvpForm" class="rsvp" novalidate>
     <label class="fld">Your name<input type="text" name="name" autocomplete="name" required></label>
     <label class="fld">Phone number<input type="tel" name="phone" autocomplete="tel" placeholder="+91" required></label>
+    <label class="fld">Number of guests (including you)<input type="number" name="guests" min="1" max="20" value="1" inputmode="numeric"></label>
     <div class="fld" style="margin-top:6px">Will you attend?</div>
     <div class="segs" role="radiogroup" aria-label="Will you attend?" data-group="attend">
       <button type="button" class="seg on" role="radio" aria-checked="true" data-v="accept">Joyfully accept</button>
       <button type="button" class="seg" role="radio" aria-checked="false" data-v="decline">Regretfully decline</button>
     </div>
     <div class="group" id="attendWrap">
-      <label class="fld">Number of guests (including you)<input type="number" name="guests" min="1" max="20" value="1" inputmode="numeric"></label>
       <div class="fld" style="margin-top:6px">Need help from our logistics team?</div>
       <div class="segs" role="radiogroup" aria-label="Logistics help" data-group="pickup">
         <button type="button" class="seg" role="radio" aria-checked="false" data-v="yes">Yes, please</button>
