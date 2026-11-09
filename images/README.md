@@ -6,7 +6,7 @@ Drop photos here with these exact names and they appear on the site automaticall
 | File | Where it shows |
 | --- | --- |
 | `lagan-lekhan.webp` | Lagan Lekhan event card (in place) |
-| `wedding.jpg` | The Wedding Day event card |
+| `wedding.jpg` | The Wedding Day event card (in place) |
 | `photo1.jpg`, `photo2.jpg`, `photo3.jpg` | "Forever Us" story collage |
 
 The three collage photos are in place (portrait shots work best; frames are ~170×300).
