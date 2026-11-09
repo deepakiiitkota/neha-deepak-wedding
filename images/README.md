@@ -5,7 +5,7 @@ Drop photos here with these exact names and they appear on the site automaticall
 
 | File | Where it shows |
 | --- | --- |
-| `lagan-lekhan.jpg` | Lagan Lekhan event card |
+| `lagan-lekhan.webp` | Lagan Lekhan event card (in place) |
 | `wedding.jpg` | The Wedding Day event card |
 | `photo1.jpg`, `photo2.jpg`, `photo3.jpg` | "Forever Us" story collage |
 
